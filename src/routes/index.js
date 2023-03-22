@@ -5,7 +5,7 @@ import SignIn from '../pages/Signin';
 const Stack = createNativeStackNavigator();
 
 export default function Routes (){
-    return(
+    return (
         <Stack.Navigator>
             <Stack.Screen
                 name="Welcome"

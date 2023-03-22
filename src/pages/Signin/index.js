@@ -1,44 +1,35 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity  } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, TextInput, TouchableOpacity  } from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../../config/connectFirebase';
+import styles from '../Signin/style';
 
 export default function Signin() {
     const [password, setPassword ] = useState('');
     const [email, setEmail ] = useState('');
     const [hidePass, setHidePass] = useState(true);
+    const [errorLogin, setErrorLogin] = useState('');
     const auth = getAuth(app);
 
-    const createUser = ()=>{
+    const createUser = () => {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            const user = userCredential.user;
-            console.log('Usuário Criado com Sucesso')
-        })
+            const user = userCredential.user; })
         .catch((error) => {
             const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log('Erro ao criar Usuário')
-            console.log(errorMessage) 
-        });
-        } 
+            const errorMessage = error.message; }); } 
 
-    const loginUser = ()=>{
+    const loginUser = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            const user = userCredential.user;
-            console.log(user)
-            console.log('Login Realizado')
-        })
+            const user = userCredential.user; 
+            setErrorLogin(false) })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log('nao fez login')
-            console.log(errorMessage)
-        });
-        } 
+            setErrorLogin(true) }); } 
 
     return (
         <View style ={styles.container}>
@@ -73,10 +64,27 @@ export default function Signin() {
                         }
                     </TouchableOpacity>
                 </View>
+                
+                {errorLogin === true
+                ?
+                    <View style={styles.contentAlert}>
+                        <MaterialCommunityIcons
+                            name ="alert-circle" />
+                        <Text style={styles.warningAlert}>Usuário e/ou senha inválidos</Text>
+                    </View> 
+                :
+                    <View/> }
 
-                <TouchableOpacity style={styles.button} onPress={loginUser}>
-                    <Text style={styles.buttonText}>Acessar</Text>    
-                </TouchableOpacity> 
+                { email === "" || password === ""
+                ? 
+                    <TouchableOpacity disabled={true} style={styles.buttonDisable} onPress={loginUser}>
+                        <Text style={styles.buttonText}>Acessar</Text>    
+                    </TouchableOpacity>
+                :
+                    <TouchableOpacity style={styles.buttonEnable} onPress={loginUser}>
+                        <Text style={styles.buttonText}>Acessar</Text>    
+                    </TouchableOpacity>
+                }
 
                 <TouchableOpacity style={styles.buttonRegister}>
                     <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>    
@@ -87,87 +95,3 @@ export default function Signin() {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor: '#38A69D'
-    },
-    containerHeader:{
-        marginTop: '14%',
-        marginBottom: '8%',
-        paddingStart: '5%',    
-    },
-    message:{
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#FFF'
-    },
-    containerForm:{
-        backgroundColor: '#FFF',
-        flex:1,
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,  
-        paddingStart: '5%',
-        paddingEnd: '5%' 
-    },
-    title:{
-        fontSize: 20,
-        marginTop: 28,
-        padding: 8
-    },
-    inputEmail:{
-        borderBottomWidth: 1,
-        height: 50,
-        color: '#FFF',
-        marginBottom: 12,
-        fontSize: 16,
-        width: '100%',
-        padding: 8
-    },
-    inputSenha:{
-        borderBottomWidth: 1,
-        height: 50,
-        color: '#FFF',
-        marginBottom: 12,
-        fontSize: 16,
-        width: '100%',
-        padding: 8
-    },
-    button:{
-        backgroundColor: '#38A69D',
-        width: '100%',
-        borderRadius: 4,
-        paddingVertical: 8,
-        marginTop: 14,
-        justifyContent: 'center',
-        alignItems: 'center'  
-    },
-    buttonText:{
-        color: '#FFF',
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    buttonRegister:{
-        marginTop: 14,
-        alignSelf: 'center' 
-    },
-    registerText:{
-        color: '#A1A1A1'
-    },
-    inputArea:{
-        flexDirection: 'row',
-        width: '85%',
-        backgroundColor: '#FFF',
-        borderRadius: 5,
-        height: 50,
-        alignItems: 'center'
-    },
-    icon:{
-        width: '15%',
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center'   
-    }
-
-})
