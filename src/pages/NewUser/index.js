@@ -2,34 +2,33 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity  } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../../config/connectFirebase';
-import styles from '../Signin/style';
-import { useNavigation } from '@react-navigation/native';
+import styles from '../NewUser/style';
 
-export default function Signin() {
+export default function NewUser() {
     const [password, setPassword ] = useState('');
+    const [rePassword, setRePassword ] = useState('');
     const [email, setEmail ] = useState('');
     const [hidePass, setHidePass] = useState(true);
-    const [errorLogin, setErrorLogin] = useState('');
+    const [hideRePass, setHideRePass] = useState(true);
+    const [errorNewUser, setErrorNewUser] = useState('');
     const auth = getAuth(app);
-    const navigation = useNavigation();
 
-    const loginUser = () => {
-        signInWithEmailAndPassword(auth, email, password)
+    const createUser = () => {
+        createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            const user = userCredential.user; 
-            setErrorLogin(false) })
+            const user = userCredential.user; })
         .catch((error) => {
             const errorCode = error.code;
-            const errorMessage = error.message;
-            setErrorLogin(true) }); } 
+            const errorMessage = error.message; 
+            setErrorNewUser(true) }); } 
 
     return (
         <View style ={styles.container}>
 
             <Animatable.View animation="fadeInLeft" delay={500} style={styles.containerHeader}>
-                <Text style={styles.message}>Bem-Vindo(a)</Text>
+                <Text style={styles.message}>Crie sua Conta(a)</Text>
             </Animatable.View>
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
@@ -58,31 +57,55 @@ export default function Signin() {
                         }
                     </TouchableOpacity>
                 </View>
+
+                <View style={styles.inputArea}>
+                    <TextInput
+                        placeholder="Digite sua senha novamente..."
+                        style={styles.inputSenha}
+                        value={rePassword}
+                        onChangeText={ (text)  => setRePassword(text) } 
+                        secureTextEntry={hideRePass}/>
+                    
+                    <TouchableOpacity style={styles.icon} onPress={ () => setHideRePass(!hideRePass) }>
+                        { hideRePass ?
+                            <Ionicons name="eye" color="#FFF" size ={25} />
+                            :
+                            <Ionicons name="eye-off" color="#FFF" size ={25} />
+                        }
+                    </TouchableOpacity>
+
+                </View>
+
+                { password !== rePassword 
+                    ?
+                        <View style={styles.contentAlert}>
+                            <MaterialCommunityIcons
+                                name ="alert-circle" />
+                            <Text style={styles.warningAlert}>As senhas são diferentes</Text>
+                        </View> 
+                    : 
+                        <View/> }                
                 
-                {errorLogin === true
+                { errorNewUser === true
                 ?
                     <View style={styles.contentAlert}>
                         <MaterialCommunityIcons
                             name ="alert-circle" />
-                        <Text style={styles.warningAlert}>Usuário e/ou senha inválidos</Text>
+                        <Text style={styles.warningAlert}>Função Indisponível no Momento</Text>
                     </View> 
                 :
                     <View/> }
 
-                { email === "" || password === ""
+                { email === "" || password === "" || rePassword === ""
                 ? 
-                    <TouchableOpacity disabled={true} style={styles.buttonDisable} onPress={loginUser}>
-                        <Text style={styles.buttonText}>Acessar</Text>    
+                    <TouchableOpacity disabled={true} style={styles.buttonDisable} onPress={createUser}>
+                        <Text style={styles.buttonText}>Criar Conta</Text>    
                     </TouchableOpacity>
                 :
-                    <TouchableOpacity style={styles.buttonEnable} onPress={loginUser}>
-                        <Text style={styles.buttonText}>Acessar</Text>    
+                    <TouchableOpacity style={styles.buttonEnable} onPress={createUser}>
+                        <Text style={styles.buttonText}>Criar Conta</Text>    
                     </TouchableOpacity>
                 }
-
-                <TouchableOpacity style={styles.buttonRegister} onPress={ () => navigation.navigate("NewUser")}>
-                    <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>    
-                </TouchableOpacity> 
 
             </Animatable.View>
 
