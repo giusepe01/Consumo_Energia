@@ -1,13 +1,43 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity  } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
-import * as Animatable from 'react-native-animatable'
+import * as Animatable from 'react-native-animatable';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { app } from '../../config/connectFirebase';
 
 export default function Signin() {
-    const [senha, setSenha ] = useState('');
+    const [password, setPassword ] = useState('');
     const [email, setEmail ] = useState('');
     const [hidePass, setHidePass] = useState(true);
+    const auth = getAuth(app);
+
+    const createUser = ()=>{
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log('Usuário Criado com Sucesso')
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log('Erro ao criar Usuário') 
+        });
+        } 
+
+    const loginUser = ()=>{
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(user)
+            console.log('Login Realizado')
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log('nao fez login')
+            console.log(errorMessage)
+        });
+        } 
 
     return (
         <View style ={styles.container}>
@@ -17,21 +47,21 @@ export default function Signin() {
             </Animatable.View>
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
+
                 <Text style={styles.title}>Email</Text>
                 <TextInput
                     placeholder="Digite seu email..."
                     style={styles.inputEmail} 
                     value={email}
-                    onChangeText={ (email)  => setEmail(email) } />
+                    onChangeText={ (text)  => setEmail(text) } />
 
                 <Text style={styles.title}>Senha</Text>
-
                 <View style={styles.inputArea}>
                     <TextInput
                         placeholder="Digite sua senha..."
                         style={styles.inputSenha}
-                        value={senha}
-                        onChangeText={ (senha)  => setSenha(senha) } 
+                        value={password}
+                        onChangeText={ (text)  => setPassword(text) } 
                         secureTextEntry={hidePass}/>
                     
                     <TouchableOpacity style={styles.icon} onPress={ () => setHidePass(!hidePass) }>
@@ -43,13 +73,14 @@ export default function Signin() {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={loginUser}>
                     <Text style={styles.buttonText}>Acessar</Text>    
                 </TouchableOpacity> 
 
                 <TouchableOpacity style={styles.buttonRegister}>
                     <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>    
                 </TouchableOpacity> 
+
             </Animatable.View>
 
         </View>

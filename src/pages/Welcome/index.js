@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-
-import * as Animatable from 'react-native-animatable'
-
-import { useNavigation } from '@react-navigation/native'
+import * as Animatable from 'react-native-animatable';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Welcome() {
     const navigation = useNavigation();
@@ -29,6 +27,7 @@ export default function Welcome() {
 
                     <Text style={styles.buttonText}>Acessar</Text>
                 </TouchableOpacity>
+
             </Animatable.View>
 
         </View>
