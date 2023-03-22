@@ -20,7 +20,8 @@ export default function Signin() {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log('Erro ao criar Usuário') 
+            console.log('Erro ao criar Usuário')
+            console.log(errorMessage) 
         });
         } 
 
