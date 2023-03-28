@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity  } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -19,7 +19,8 @@ export default function Signin() {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user; 
-            setErrorLogin(false) })
+            setErrorLogin(false)
+            alert('Login Realizado') })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -52,9 +53,9 @@ export default function Signin() {
                     
                     <TouchableOpacity style={styles.icon} onPress={ () => setHidePass(!hidePass) }>
                         { hidePass ?
-                            <Ionicons name="eye" color="#FFF" size ={25} />
+                            <Ionicons name="eye" color="#000000" size ={25} />
                             :
-                            <Ionicons name="eye-off" color="#FFF" size ={25} />
+                            <Ionicons name="eye-off" color="#000000" size ={25} />
                         }
                     </TouchableOpacity>
                 </View>

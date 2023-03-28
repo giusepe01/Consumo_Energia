@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     inputEmail:{
         borderBottomWidth: 1,
         height: 50,
-        color: '#FFF',
+        color: '#000000',
         marginBottom: 12,
         fontSize: 16,
         width: '100%',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     inputSenha:{
         borderBottomWidth: 1,
         height: 50,
-        color: '#FFF',
+        color: '#000000',
         marginBottom: 12,
         fontSize: 16,
         width: '100%',
@@ -93,12 +93,14 @@ const styles = StyleSheet.create({
     contentAlert:{
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'   
+        alignItems: 'center'
+
     },
     warningAlert:{
         paddingLeft: 10,
-        color: '#BDBDBD',
-        fontSize: 16
+        color: '#FF0000',
+        fontSize: 16,
+        
     },
 })
 

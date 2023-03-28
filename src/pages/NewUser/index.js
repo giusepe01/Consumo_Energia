@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity  } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../../config/connectFirebase';
 import styles from '../NewUser/style';
+import { useNavigation } from '@react-navigation/native';
 
 export default function NewUser() {
     const [password, setPassword ] = useState('');
@@ -14,21 +15,25 @@ export default function NewUser() {
     const [hideRePass, setHideRePass] = useState(true);
     const [errorNewUser, setErrorNewUser] = useState('');
     const auth = getAuth(app);
+    const navigation = useNavigation();
 
     const createUser = () => {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            const user = userCredential.user; })
+            const user = userCredential.user; 
+            alert('Login Criado')
+            navigation.navigate("SignIn")})
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message; 
-            setErrorNewUser(true) }); } 
+            setErrorNewUser(true)
+            alert(errorMessage) }); } 
 
     return (
         <View style ={styles.container}>
 
             <Animatable.View animation="fadeInLeft" delay={500} style={styles.containerHeader}>
-                <Text style={styles.message}>Crie sua Conta(a)</Text>
+                <Text style={styles.message}>Crie sua Conta</Text>
             </Animatable.View>
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
@@ -51,9 +56,9 @@ export default function NewUser() {
                     
                     <TouchableOpacity style={styles.icon} onPress={ () => setHidePass(!hidePass) }>
                         { hidePass ?
-                            <Ionicons name="eye" color="#FFF" size ={25} />
+                            <Ionicons name="eye" color="#000000" size ={25} />
                             :
-                            <Ionicons name="eye-off" color="#FFF" size ={25} />
+                            <Ionicons name="eye-off" color="#000000" size ={25} />
                         }
                     </TouchableOpacity>
                 </View>
@@ -68,9 +73,9 @@ export default function NewUser() {
                     
                     <TouchableOpacity style={styles.icon} onPress={ () => setHideRePass(!hideRePass) }>
                         { hideRePass ?
-                            <Ionicons name="eye" color="#FFF" size ={25} />
+                            <Ionicons name="eye" color="#000000" size ={25} />
                             :
-                            <Ionicons name="eye-off" color="#FFF" size ={25} />
+                            <Ionicons name="eye-off" color="#000000" size ={25} />
                         }
                     </TouchableOpacity>
 
