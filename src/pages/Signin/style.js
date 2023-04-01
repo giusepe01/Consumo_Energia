@@ -102,6 +102,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         
     },
+    loadingContainer:{
+        flex:1,
+        backgroundColor: '#e2e2e2',
+        justifyContent: 'center'
+    },
+
 })
 
 export default styles

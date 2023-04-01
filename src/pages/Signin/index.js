@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -14,22 +14,37 @@ export default function Signin() {
     const [errorLogin, setErrorLogin] = useState('');
     const auth = getAuth(app);
     const navigation = useNavigation();
+    const [isLoading, setLoading] = useState(false);
 
-    const loginUser = () => {
-        signInWithEmailAndPassword(auth, email, password)
+
+    const loginUser = async () => {
+        setLoading(true);
+       await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user; 
             setErrorLogin(false)
-            alert('Login Realizado') })
+            // alert('Login Realizado') 
+            navigation.navigate("Devices");
+        })
+
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            setErrorLogin(true) }); } 
+            setErrorLogin(true) }); 
+        setLoading(false);
+        } 
 
     return (
-        <View style ={styles.container}>
 
-            <Animatable.View animation="fadeInLeft" delay={500} style={styles.containerHeader}>
+        <View style ={styles.container}>
+        
+        {isLoading ? 
+        <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#ffffff" />
+        </View>
+        :
+        <View style ={styles.container}>
+        <Animatable.View animation="fadeInLeft" delay={500} style={styles.containerHeader}>
                 <Text style={styles.message}>Bem-Vindo(a)</Text>
             </Animatable.View>
 
@@ -86,7 +101,10 @@ export default function Signin() {
                 </TouchableOpacity> 
 
             </Animatable.View>
-
+            
         </View>
+        }
+    </View>
+            
     );
 }
