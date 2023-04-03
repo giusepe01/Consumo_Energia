@@ -24,21 +24,43 @@ const styles = StyleSheet.create({
         paddingEnd: '5%' 
     },
     buttonNewDevice:{
-        position: "absolute",
-        width: 60,
-        height: 60,
-        bottom: 30,
-        left: 20,
-        backgroundColor: "#38A69D",
-        borderRadius: 50,
-        justifyContent: "center",
-        alignItems: "center" 
+        backgroundColor: '#38A69D',
+        width: '100%',
+        borderRadius: 4,
+        paddingVertical: 8,
+        marginTop: 14,
+        justifyContent: 'center',
+        alignItems: 'center'  
+    },
+    buttonNewDeviceDisable:{
+        backgroundColor: '#696969',
+        width: '100%',
+        borderRadius: 4,
+        paddingVertical: 8,
+        marginTop: 14,
+        justifyContent: 'center',
+        alignItems: 'center'  
     },
     iconButton:{
-        color: '#FFFFFF',
-        fontSize: 35,
-        fontWeight: "bold"
+        color: '#FFF',
+        fontSize: 18,
+        fontWeight: 'bold'
     },
+    inputText:{
+        borderBottomWidth: 1,
+        height: 50,
+        color: '#000000',
+        marginBottom: 12,
+        fontSize: 16,
+        width: '100%',
+        padding: 8
+        
+    },
+    label:{
+        fontSize: 20,
+        marginTop: 28,
+        padding: 8
+    }
     
 })
 

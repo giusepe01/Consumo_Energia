@@ -40,7 +40,7 @@ export default function Signin() {
         
         {isLoading ? 
         <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#ffffff" />
+        <ActivityIndicator size="large" color="#FFFFFF"/>
         </View>
         :
         <View style ={styles.container}>

@@ -4,23 +4,22 @@ import * as Animatable from 'react-native-animatable';
 import { app } from '../../config/connectFirebase';
 import styles from '../NewDevice/style';
 import { useNavigation } from '@react-navigation/native';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import { FlatList } from 'react-native-gesture-handler';
+import { collection, addDoc, getFirestore } from 'firebase/firestore';
+import { TextInput } from 'react-native-gesture-handler';
+
 
 export default function NewDevice() {
-    const [devices, setDevices] = useState ([]);
-    const db = getFirestore(app);
-    const userCollectionRef = collection(db, "Devices" );
+    const [Name, setName] = useState ('');
     const navigation = useNavigation();
+    const db = getFirestore(app);
 
-    //useEffect(() => {
-      //  const getDevices = async () => {
-        //    const data = await getDocs(userCollectionRef);
-          //  setDevices(data.docs.map((doc) => ({...doc.data(), id: doc.id })));
-            //console.log(devices);
-        //};
-        //getDevices();
-    //},[])
+    async function addDevice(){
+        const device = await addDoc(collection(db, "Devices"), {
+            Name: Name        
+        });
+        navigation.navigate("Devices")
+    }
+    
 
     return (
         <View style ={styles.container}>
@@ -29,10 +28,31 @@ export default function NewDevice() {
             </Animatable.View>
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
-                <FlatList/>
-                <TouchableOpacity style ={styles.buttonNewDevice} onPress={ () => navigation.navigate("NewDevice") }>
-                    <Text style={styles.iconButton}>+</Text>        
-                </TouchableOpacity>
+                <Text style={styles.label}>Nome do Dispositivo</Text> 
+                <TextInput 
+                    style={styles.inputText}  
+                    placeholder="Ex: Máquina de Lavar"
+                    onChangeText={setName}
+                    value={Name}
+                />
+                
+                { Name === ""
+                ?
+                    <TouchableOpacity
+                        disabled={true}
+                        style={styles.buttonNewDeviceDisable}
+                        onPress={()=>{addDevice()}}
+                    >
+                        <Text style={styles.iconButton}>Save</Text>
+                    </TouchableOpacity>
+                :
+                    <TouchableOpacity
+                        style={styles.buttonNewDevice}
+                        onPress={()=>{addDevice()}}
+                    >
+                        <Text style={styles.iconButton}>Save</Text>
+                    </TouchableOpacity>
+                }
 
             </Animatable.View>
 

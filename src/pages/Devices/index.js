@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import { app } from '../../config/connectFirebase';
 import styles from '../Devices/style';
 import { useNavigation } from '@react-navigation/native';
-import { collection, getDocs, getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { collection, getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';
 import { FlatList } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 
