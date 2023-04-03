@@ -3,6 +3,7 @@ import Welcome from '../pages/Welcome';
 import SignIn from '../pages/Signin';
 import NewUser from '../pages/NewUser';
 import Devices from '../pages/Devices';
+import NewDevice from '../pages/NewDevice';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +28,12 @@ export default function Routes (){
             <Stack.Screen
                 name="Devices"
                 component={Devices}
-                options={{headerShown: false}}/> 
+                options={{headerShown: false}}/>
+
+            <Stack.Screen
+                name="NewDevice"
+                component={NewDevice}
+                options={{headerShown: false}}/>  
         </Stack.Navigator>
     )
 }

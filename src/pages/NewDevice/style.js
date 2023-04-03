@@ -39,28 +39,6 @@ const styles = StyleSheet.create({
         fontSize: 35,
         fontWeight: "bold"
     },
-    Device:{
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 5
-    },
-    deleteDevice:{
-        justifyContent: "center",
-        paddingLeft: 15
-    },
-    nameDevice:{
-        width: "85%",
-        alignContent: "flex-start",
-        backgroundColor: "#F5F5F5CF",
-        padding: 12,
-        paddingHorizontal: 20,
-        borderRadius: 50,
-        marginBottom: 5,
-        marginRight: 5,
-        color: "#000000",
-        fontSize: 18    
-    }
     
 })
 

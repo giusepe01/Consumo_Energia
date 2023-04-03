@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-// import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../../config/connectFirebase';
-import styles from '../Signin/style';
+import styles from '../Devices/style';
 import { useNavigation } from '@react-navigation/native';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, getDocs, getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { FlatList } from 'react-native-gesture-handler';
+import { AntDesign } from '@expo/vector-icons';
 
-export default function Init() {
+export default function Devices() {
+    const [devices, setDevices] = useState ([]);
     const db = getFirestore(app);
-    const userCollectionRef = collection(db, "Devices" );
-
-    useEffect(() => {
-        const getDevices = async () => {
-            const data = await getDocs(userCollectionRef);
-            console.log(data.docs.map((doc) => ({...doc.data(), id: doc.id })));
-        };
-        getDevices();
-    },[])
-
     const navigation = useNavigation();
-    const connectedCallback = () => {
-        console.log('ABRIU A TELA');} 
+
+    async function deleteDevice(id){
+        const deviceDoc = doc(db, "Devices", id);
+        await deleteDoc(deviceDoc);
+    } 
+
+    useEffect (
+        () => 
+            onSnapshot(collection(db, "Devices" ), (snapshot) =>
+                setDevices(snapshot.docs.map((doc) => ({...doc.data(), id: doc.id }))) 
+            ),
+        []
+    );
 
     return (
         <View style ={styles.container}>
@@ -31,7 +33,43 @@ export default function Init() {
             </Animatable.View>
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
-
+                <FlatList 
+                    showsVerticalScrollIndicator = {false} 
+                    data={devices} 
+                    renderItem={( { item } ) => {
+                    return (
+                    <View style={styles.Device}> 
+                        <Text 
+                            style={styles.nameDevice} 
+                            onPress={ () => 
+                                navigation.navigate("Details", {
+                                id: item.id,
+                                Name: item.Name,
+                                })
+                            }
+                        >
+                        {item.Name}
+                        </Text>
+                        <TouchableOpacity 
+                            style={styles.deleteDevice} 
+                            onPress={ () => {
+                            deleteDevice(item.id) 
+                            }}
+                        > 
+                        <AntDesign 
+                            name="delete" 
+                            size={25} 
+                            color={"#38A69D"}
+                        >  
+                        </AntDesign>
+                        </TouchableOpacity>        
+                    </View> 
+                    )
+                }}
+            />
+                <TouchableOpacity style ={styles.buttonNewDevice} onPress={ () => navigation.navigate("NewDevice") }>
+                    <Text style={styles.iconButton}>+</Text>        
+                </TouchableOpacity>
             </Animatable.View>
 
         </View>
