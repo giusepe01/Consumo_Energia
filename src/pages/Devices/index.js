@@ -16,7 +16,7 @@ export default function Devices({route}) {
     const auth = getAuth(app);
 
     const backAction = () => {
-        Alert.alert("Atenção!", "Tem certeza que deseja sair?", [
+        Alert.alert("Atenção!", "Tem certeza que deseja sair do aplicativo?", [
           {
             text: "Cancelar",
             onPress: () => null,
@@ -25,6 +25,21 @@ export default function Devices({route}) {
           { 
             text: "SIM", 
             onPress: () => BackHandler.exitApp() 
+          }
+        ]);
+        return true;
+    };
+
+    const ButtonLogout = () => {
+        Alert.alert("Atenção!", "Tem certeza que deseja realizar Logout?", [
+          {
+            text: "Cancelar",
+            onPress: () => null,
+            style: "cancel"
+          },
+          { 
+            text: "SIM", 
+            onPress: () => logout() 
           }
         ]);
         return true;
@@ -103,7 +118,7 @@ export default function Devices({route}) {
                     <Text style={styles.iconButton}>+</Text>        
                 </TouchableOpacity>
 
-                <TouchableOpacity style ={styles.buttonLogout} onPress={ () => { logout() } }>
+                <TouchableOpacity style ={styles.buttonLogout} onPress={ () => { ButtonLogout() } }>
                     <Text style ={styles.iconButtonLogout}>
                         <MaterialCommunityIcons
                             name="location-exit"

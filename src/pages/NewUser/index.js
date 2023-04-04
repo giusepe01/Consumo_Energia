@@ -27,7 +27,7 @@ export default function NewUser() {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user; 
-            alert('Login Criado')
+            Alert.alert('Conta criada com sucesso')
             limparTela();
             navigation.navigate("SignIn")})
         .catch((error) => {
