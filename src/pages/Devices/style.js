@@ -39,6 +39,20 @@ const styles = StyleSheet.create({
         fontSize: 35,
         fontWeight: "bold"
     },
+    buttonLogout:{
+        position: "absolute",
+        width: 60,
+        height: 60,
+        bottom: 30,
+        right: 20,
+        justifyContent: "center",
+        alignItems: "center" 
+    },
+    iconButtonLogout:{
+        color: '#FFFFFF',
+        fontSize: 35,
+        fontWeight: "bold"
+    },
     Device:{
         width: "100%",
         flexDirection: "row",
@@ -53,11 +67,13 @@ const styles = StyleSheet.create({
         width: "85%",
         alignContent: "flex-start",
         backgroundColor: "#F5F5F5CF",
-        padding: 12,
-        paddingHorizontal: 20,
+        padding: 10,
+        paddingHorizontal: 10,
         borderRadius: 50,
         marginBottom: 5,
         marginRight: 5,
+        marginTop: 2,
+        marginStart: 2,
         color: "#000000",
         fontSize: 18    
     }

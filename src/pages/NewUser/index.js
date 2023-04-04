@@ -17,11 +17,18 @@ export default function NewUser() {
     const auth = getAuth(app);
     const navigation = useNavigation();
 
+    const limparTela = () => {
+        setPassword('');
+        setEmail('');
+        setRePassword('');
+    }
+
     const createUser = () => {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user; 
             alert('Login Criado')
+            limparTela();
             navigation.navigate("SignIn")})
         .catch((error) => {
             const errorCode = error.code;
@@ -101,7 +108,7 @@ export default function NewUser() {
                 :
                     <View/> }
 
-                { email === "" || password === "" || rePassword === ""
+                { email === "" || password === "" || rePassword === "" || (password !== rePassword) 
                 ? 
                     <TouchableOpacity disabled={true} style={styles.buttonDisable} onPress={createUser}>
                         <Text style={styles.buttonText}>Criar Conta</Text>    

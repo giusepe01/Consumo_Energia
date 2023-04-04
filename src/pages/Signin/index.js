@@ -16,22 +16,28 @@ export default function Signin() {
     const navigation = useNavigation();
     const [isLoading, setLoading] = useState(false);
 
+    const limparTela = () => {
+        setPassword('');
+        setEmail('');
+        setErrorLogin(false);
+    } 
 
     const loginUser = async () => {
         setLoading(true);
        await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            const user = userCredential.user; 
-            setErrorLogin(false)
-            // alert('Login Realizado') 
-            navigation.navigate("Devices");
+            const user = userCredential.user;
+            const uid = user.uid; 
+            setErrorLogin(false);
+            limparTela(); 
+            navigation.navigate("Devices", {idUser: uid});
         })
 
         .catch((error) => {
             const errorCode = error.code;
-            const errorMessage = error.message;
+            const errorMessage = error.message; 
             setErrorLogin(true) }); 
-        setLoading(false);
+            setLoading(false);
         } 
 
     return (
@@ -96,7 +102,7 @@ export default function Signin() {
                     </TouchableOpacity>
                 }
 
-                <TouchableOpacity style={styles.buttonRegister} onPress={ () => navigation.navigate("NewUser")}>
+                <TouchableOpacity style={styles.buttonRegister} onPress={ () => {limparTela(); navigation.navigate("NewUser")}}>
                     <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>    
                 </TouchableOpacity> 
 

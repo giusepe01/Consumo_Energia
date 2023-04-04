@@ -8,16 +8,16 @@ import { collection, addDoc, getFirestore } from 'firebase/firestore';
 import { TextInput } from 'react-native-gesture-handler';
 
 
-export default function NewDevice() {
+export default function NewDevice({route}) {
     const [Name, setName] = useState ('');
     const navigation = useNavigation();
     const db = getFirestore(app);
 
     async function addDevice(){
-        const device = await addDoc(collection(db, "Devices"), {
+        const device = await addDoc(collection(db, route.params.idUser), {
             Name: Name        
         });
-        navigation.navigate("Devices")
+        navigation.navigate("Devices", {idUser: route.params.idUser})
     }
     
 

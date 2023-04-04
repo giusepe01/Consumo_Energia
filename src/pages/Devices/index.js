@@ -1,30 +1,61 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, alert, BackHandler, Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { app } from '../../config/connectFirebase';
 import styles from '../Devices/style';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import { collection, getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { getAuth, signOut } from 'firebase/auth';
 import { FlatList } from 'react-native-gesture-handler';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function Devices() {
+export default function Devices({route}) {
     const [devices, setDevices] = useState ([]);
     const db = getFirestore(app);
     const navigation = useNavigation();
+    const auth = getAuth(app);
+
+    const backAction = () => {
+        Alert.alert("Atenção!", "Tem certeza que deseja sair?", [
+          {
+            text: "Cancelar",
+            onPress: () => null,
+            style: "cancel"
+          },
+          { 
+            text: "SIM", 
+            onPress: () => BackHandler.exitApp() 
+          }
+        ]);
+        return true;
+    };
+
+    function logout () {
+        signOut(auth).then(() => {
+            navigation.navigate("SignIn")
+      }).catch((error) => {
+            alert('Erro ao fazer logout');
+      });}
 
     async function deleteDevice(id){
-        const deviceDoc = doc(db, "Devices", id);
+        const deviceDoc = doc(db, route.params.idUser, id);
         await deleteDoc(deviceDoc);
     } 
 
     useEffect (
         () => 
-            onSnapshot(collection(db, "Devices" ), (snapshot) =>
+            onSnapshot(collection(db, route.params.idUser ), (snapshot) =>
                 setDevices(snapshot.docs.map((doc) => ({...doc.data(), id: doc.id }))) 
             ),
         []
     );
+
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", backAction);
+    
+        return () =>
+          BackHandler.removeEventListener("hardwareBackPress", backAction);
+      }, []);
 
     return (
         <View style ={styles.container}>
@@ -45,6 +76,7 @@ export default function Devices() {
                                 navigation.navigate("Details", {
                                 id: item.id,
                                 Name: item.Name,
+                                idUser: route.params.idUser
                                 })
                             }
                         >
@@ -67,8 +99,18 @@ export default function Devices() {
                     )
                 }}
             />
-                <TouchableOpacity style ={styles.buttonNewDevice} onPress={ () => navigation.navigate("NewDevice") }>
+                <TouchableOpacity style ={styles.buttonNewDevice} onPress={ () => navigation.navigate("NewDevice", {idUser: route.params.idUser}) }>
                     <Text style={styles.iconButton}>+</Text>        
+                </TouchableOpacity>
+
+                <TouchableOpacity style ={styles.buttonLogout} onPress={ () => { logout() } }>
+                    <Text style ={styles.iconButtonLogout}>
+                        <MaterialCommunityIcons
+                            name="location-exit"
+                            size={55}
+                            color={"#38A69D"}    
+                        />
+                    </Text>        
                 </TouchableOpacity>
             </Animatable.View>
 
