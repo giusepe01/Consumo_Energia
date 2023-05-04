@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, alert, BackHandler, Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { app } from '../../config/connectFirebase';
 import styles from '../NewDevice/style';
@@ -19,6 +19,29 @@ export default function NewDevice({route}) {
         });
         navigation.navigate("Devices", {idUser: route.params.idUser})
     }
+
+    const backAction = () => {
+        Alert.alert("Atenção!", "Tem certeza que deseja cancelar a criação do dispositivo?", [
+          {
+            text: "Cancelar",
+            onPress: () => null,
+            style: "cancel"
+          },
+          { 
+            text: "SIM", 
+            onPress: () => navigation.navigate("Devices", {idUser: route.params.idUser})
+          }
+        ]);
+        return true;
+    };
+
+
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", backAction);
+    
+        return () =>
+          BackHandler.removeEventListener("hardwareBackPress", backAction);
+      }, []);
     
 
     return (
@@ -31,7 +54,7 @@ export default function NewDevice({route}) {
                 <Text style={styles.label}>Nome do Dispositivo</Text> 
                 <TextInput 
                     style={styles.inputText}  
-                    placeholder="Ex: Máquina de Lavar"
+                    placeholder="Ex: Lava louças"
                     onChangeText={setName}
                     value={Name}
                 />
