@@ -10,7 +10,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Details({route}) {
-    const [devices, getDeviceInfo] = useState ([]);
+    const [deviceInfo, getDeviceInfo] = useState ([]);
     const db = getFirestore(app);
     const navigation = useNavigation();
     const auth = getAuth(app);
@@ -36,17 +36,12 @@ export default function Details({route}) {
         return true;
     };
 
-    // async function getDeviceInfo(id, Name, idUser ){
-    //     const deviceDoc = doc(db, route.params.idUser, id);
-    //     await deleteDoc(deviceDoc);
-    // } 
-
     useEffect (
         () => 
-        onSnapshot(doc(db, route.params.idUser, route.params.Itemid), (doc) =>
-                console.log('RETORNO>> ' , doc.data())
-                // getDeviceInfo(doc.data().map((varDoc) => ({...varDoc, id: doc.id })))
-            ),
+        onSnapshot(doc(db, route.params.idUser, route.params.Itemid), (doc) =>{
+                console.log(doc.data());
+                getDeviceInfo(...doc.data());
+            }),
         []
     );
 
@@ -66,6 +61,9 @@ export default function Details({route}) {
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
              {/* conteudo */}
                 
+             {deviceInfo.Name}
+             {deviceInfo.Ligado}
+             {deviceInfo.consumo}
 
               
             </Animatable.View>
