@@ -80,7 +80,7 @@ export default function Devices({route}) {
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
                 <FlatList 
-                    showsVerticalScrollIndicator = {false} 
+                    showsVerticalScrollIndicator = {false}
                     data={devices} 
                     renderItem={( { item } ) => {
                     return (
@@ -89,7 +89,7 @@ export default function Devices({route}) {
                             style={styles.nameDevice} 
                             onPress={ () => 
                                 navigation.navigate("Details", {
-                                id: item.id,
+                                Itemid: item.id,
                                 Name: item.Name,
                                 idUser: route.params.idUser
                                 })
