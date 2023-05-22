@@ -15,7 +15,10 @@ export default function NewDevice({route}) {
 
     async function addDevice(){
         const device = await addDoc(collection(db, route.params.idUser), {
-            Name: Name        
+            Name: Name,
+            Consumo: 0,
+            Ligado: false
+
         });
         navigation.navigate("Devices", {idUser: route.params.idUser})
     }

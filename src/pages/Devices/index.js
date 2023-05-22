@@ -65,8 +65,6 @@ export default function Devices({route}) {
         []
     );
 
-
-
     useEffect(() => {
         BackHandler.addEventListener("hardwareBackPress", backAction);
     
