@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, BackHandler } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { app } from '../../config/connectFirebase';
 import styles from '../Devices/style';
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Details({route}) {
     const db = getFirestore(app);
+    const navigation = useNavigation();
 
     useEffect (
         () => 
@@ -15,6 +17,18 @@ export default function Details({route}) {
             }),
         []
     );
+
+    function GoBack() {
+        navigation.goBack();
+        return true;
+      }
+
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", GoBack);
+    
+        return () =>
+          BackHandler.removeEventListener("hardwareBackPress", GoBack);
+      }, []);
 
     return (
         <View style ={styles.container}>
