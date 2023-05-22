@@ -14,6 +14,9 @@ export default function Details({route}) {
         () => 
         onSnapshot(doc(db, route.params.idUser, route.params.Itemid), (doc) =>{
                 console.log(doc.data());
+                let varTeste = JSON.parse(JSON.stringify(doc.data()));
+                console.log('Valor do Consumo', varTeste.Consumo);
+                console.log('Está ligado?', varTeste.Ligado);
             }),
         []
     );
