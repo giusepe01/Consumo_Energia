@@ -1,5 +1,7 @@
+// import da função de estilos //
 import { StyleSheet } from 'react-native';
 
+// define todos os estilos dos componentes que serão utilizados na tela //
 const styles = StyleSheet.create({
     container:{
         flex:1,

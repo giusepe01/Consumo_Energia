@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+// import dos icones usados para ver a senha digitada "espiadinha" //
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+// import da função de animação de tela //
 import * as Animatable from 'react-native-animatable';
+// import das funções utilizadas para banco de dados (Firebase) //
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+// import da conexão com o firebase //
 import { app } from '../../config/connectFirebase';
+// import dos estilos dos componentes //
 import styles from '../Signin/style';
+// import da função de navegação //
 import { useNavigation } from '@react-navigation/native';
 
+// definição de todas as variáveis utilizadas na pagina //
 export default function Signin() {
     const [password, setPassword ] = useState('');
     const [email, setEmail ] = useState('');
@@ -16,12 +23,14 @@ export default function Signin() {
     const navigation = useNavigation();
     const [isLoading, setLoading] = useState(false);
 
+// função utilizada para limpar os dados digitados na tela //   
     const limparTela = () => {
         setPassword('');
         setEmail('');
         setErrorLogin(false);
     } 
 
+// função utilizada para realizar o login do usuário, autenticando diretamente no firebase //
     const loginUser = async () => {
         setLoading(true);
        await signInWithEmailAndPassword(auth, email, password)
@@ -32,7 +41,6 @@ export default function Signin() {
             limparTela(); 
             navigation.navigate("Devices", {idUser: uid});
         })
-
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message; 
@@ -56,6 +64,7 @@ export default function Signin() {
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
 
+                {/* campo referente ao email do usuário */}
                 <Text style={styles.title}>Email</Text>
                 <TextInput
                     placeholder="Digite seu email..."
@@ -63,6 +72,7 @@ export default function Signin() {
                     value={email}
                     onChangeText={ (text)  => setEmail(text) } />
 
+                {/* campo referente a senha do usuário */}
                 <Text style={styles.title}>Senha</Text>
                 <View style={styles.inputArea}>
                     <TextInput
@@ -72,6 +82,7 @@ export default function Signin() {
                         onChangeText={ (text)  => setPassword(text) } 
                         secureTextEntry={hidePass}/>
                     
+                    {/* função para mostrar a senha digitada */}
                     <TouchableOpacity style={styles.icon} onPress={ () => setHidePass(!hidePass) }>
                         { hidePass ?
                             <Ionicons name="eye" color="#000000" size ={25} />
@@ -81,6 +92,7 @@ export default function Signin() {
                     </TouchableOpacity>
                 </View>
                 
+                {/* Verificação de erro no login */}
                 {errorLogin === true
                 ?
                     <View style={styles.contentAlert}>
@@ -91,6 +103,7 @@ export default function Signin() {
                 :
                     <View/> }
 
+                {/* Só permite clicar no botão de login, caso os campos estejam preenchidos */}
                 { email === "" || password === ""
                 ? 
                     <TouchableOpacity disabled={true} style={styles.buttonDisable} onPress={loginUser}>
@@ -102,6 +115,7 @@ export default function Signin() {
                     </TouchableOpacity>
                 }
 
+                {/* botão para cadastrar um novo usuário */}
                 <TouchableOpacity style={styles.buttonRegister} onPress={ () => {limparTela(); navigation.navigate("NewUser")}}>
                     <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>    
                 </TouchableOpacity> 

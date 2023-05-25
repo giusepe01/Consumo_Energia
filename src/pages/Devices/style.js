@@ -1,5 +1,7 @@
+// import da função de estilos //
 import { StyleSheet } from 'react-native';
 
+// define todos os estilos dos componentes que serão utilizados na tela //
 const styles = StyleSheet.create({
     container:{
         flex:1,
@@ -13,7 +15,8 @@ const styles = StyleSheet.create({
     message:{
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#FFF'
+        color: '#FFF',
+        textAlign: 'center'
     },
     containerForm:{
         backgroundColor: '#FFF',
@@ -57,7 +60,10 @@ const styles = StyleSheet.create({
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 5
+        marginTop: 8,
+        justifyContent: 'center',
+        alignItems: 'center' 
+
     },
     deleteDevice:{
         justifyContent: "center",
@@ -67,15 +73,19 @@ const styles = StyleSheet.create({
         width: "85%",
         alignContent: "flex-start",
         backgroundColor: "#F5F5F5CF",
-        padding: 10,
-        paddingHorizontal: 10,
-        borderRadius: 50,
-        marginBottom: 5,
+        padding: 8,
+        paddingHorizontal: 5,
+        borderRadius: 35,
+        marginBottom: 1,
         marginRight: 5,
-        marginTop: 2,
-        marginStart: 2,
+        marginLeft: 5,
+        marginTop: 8,
+        marginStart: 1,
         color: "#000000",
-        fontSize: 18    
+        fontSize: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center'
     }
     
 })

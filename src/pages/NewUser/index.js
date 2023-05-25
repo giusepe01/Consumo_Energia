@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+// import dos icones //
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+// import da função de animação da tela //
 import * as Animatable from 'react-native-animatable';
+// import das funções utilizadas no banco de dados (Firebase) //
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+// import da conexeção com o banco //
 import { app } from '../../config/connectFirebase';
+// import dos estilos utilizados nos componentes //
 import styles from '../NewUser/style';
+// import na função de navegação entre telas
 import { useNavigation } from '@react-navigation/native';
 
+// definição de todas as variáveis utilizadas na tela //
 export default function NewUser() {
     const [password, setPassword ] = useState('');
     const [rePassword, setRePassword ] = useState('');
@@ -17,12 +24,14 @@ export default function NewUser() {
     const auth = getAuth(app);
     const navigation = useNavigation();
 
+    // função de limpar os dados digitados em tela //
     const limparTela = () => {
         setPassword('');
         setEmail('');
         setRePassword('');
     }
 
+    // função de criar um novo usuário no banco de dados // 
     const createUser = () => {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -45,6 +54,7 @@ export default function NewUser() {
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
 
+                {/* recebe o email digitado na tela */}
                 <Text style={styles.title}>Email</Text>
                 <TextInput
                     placeholder="Digite seu email..."
@@ -52,6 +62,7 @@ export default function NewUser() {
                     value={email}
                     onChangeText={ (text)  => setEmail(text) } />
 
+                {/* recebe a senha digitada na tela */}
                 <Text style={styles.title}>Senha</Text>
                 <View style={styles.inputArea}>
                     <TextInput
@@ -61,6 +72,7 @@ export default function NewUser() {
                         onChangeText={ (text)  => setPassword(text) } 
                         secureTextEntry={hidePass}/>
                     
+                    {/* função de mostrar a senha digitada "espiadinha" */}
                     <TouchableOpacity style={styles.icon} onPress={ () => setHidePass(!hidePass) }>
                         { hidePass ?
                             <Ionicons name="eye" color="#000000" size ={25} />
@@ -71,6 +83,7 @@ export default function NewUser() {
                 </View>
 
                 <View style={styles.inputArea}>
+                    {/* recebe a segunda senha digitada em tela */}
                     <TextInput
                         placeholder="Digite sua senha novamente..."
                         style={styles.inputSenha}
@@ -78,6 +91,7 @@ export default function NewUser() {
                         onChangeText={ (text)  => setRePassword(text) } 
                         secureTextEntry={hideRePass}/>
                     
+                    {/* função de mostrar a senha digitada "espiadinha" */}
                     <TouchableOpacity style={styles.icon} onPress={ () => setHideRePass(!hideRePass) }>
                         { hideRePass ?
                             <Ionicons name="eye" color="#000000" size ={25} />
@@ -88,6 +102,7 @@ export default function NewUser() {
 
                 </View>
 
+                {/* função para verificar se as duas senhas digitadas são iguais */}
                 { password !== rePassword 
                     ?
                         <View style={styles.contentAlert}>
@@ -98,6 +113,7 @@ export default function NewUser() {
                     : 
                         <View/> }                
                 
+                {/* valida se houve problema ao criar um novo usuário */}
                 { errorNewUser === true
                 ?
                     <View style={styles.contentAlert}>
@@ -108,6 +124,7 @@ export default function NewUser() {
                 :
                     <View/> }
 
+                {/* função para só habilitar o botão de cadastrar, se todos os campos estiverem preenchidos */}
                 { email === "" || password === "" || rePassword === "" || (password !== rePassword) 
                 ? 
                     <TouchableOpacity disabled={true} style={styles.buttonDisable} onPress={createUser}>

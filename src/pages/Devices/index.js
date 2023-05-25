@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, alert, BackHandler, Alert } from 'react-native';
+// import da função de animação de tela //
 import * as Animatable from 'react-native-animatable';
+// import da conexão com o banco //
 import { app } from '../../config/connectFirebase';
+// import dos estilos de cada componente utilizado na tela //
 import styles from '../Devices/style';
-import { useNavigation, CommonActions } from '@react-navigation/native';
+// import da função de navegação entre telas //
+import { useNavigation } from '@react-navigation/native';
+// import das função utilizadas pelo banco de dados (Firebase) //
 import { collection, getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
+// import da função de lista //
 import { FlatList } from 'react-native-gesture-handler';
+// import de icones //
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
+// definição de todas as variáveis utilizadas na pagina //
 export default function Devices({route}) {
     const [devices, setDevices] = useState ([]);
     const db = getFirestore(app);
     const navigation = useNavigation();
     const auth = getAuth(app);
 
+    // confirma a intenção do usuário ao realizar a função de voltar tela //
     const backAction = () => {
         Alert.alert("Atenção!", "Tem certeza que deseja sair do aplicativo?", [
           {
@@ -30,6 +39,7 @@ export default function Devices({route}) {
         return true;
     };
 
+    // confirma a intenção do usuário ao realizar a função de logout //
     const ButtonLogout = () => {
         Alert.alert("Atenção!", "Tem certeza que deseja realizar Logout?", [
           {
@@ -45,6 +55,7 @@ export default function Devices({route}) {
         return true;
     };
 
+    // função de logout do usuário //
     function logout () {
         signOut(auth).then(() => {
             navigation.navigate("SignIn")
@@ -52,11 +63,13 @@ export default function Devices({route}) {
             alert('Erro ao fazer logout');
       });}
 
+    // função de deletar um dispositivo //
     async function deleteDevice(id){
         const deviceDoc = doc(db, route.params.idUser, id);
         await deleteDoc(deviceDoc);
     } 
 
+    // função para ler todos os dispositivos do usuário logado (em tempo real) //
     useEffect (
         () => 
             onSnapshot(collection(db, route.params.idUser ), (snapshot) =>
@@ -65,6 +78,7 @@ export default function Devices({route}) {
         []
     );
 
+    // define a função do botão de voltar tela //
     useEffect(() => {
         BackHandler.addEventListener("hardwareBackPress", backAction);
     
@@ -79,6 +93,7 @@ export default function Devices({route}) {
             </Animatable.View>
 
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
+                {/* percorre todos os dispositivos encontrado no banco, e para cada ocorrencia, cria um botão na tela */}
                 <FlatList 
                     showsVerticalScrollIndicator = {false}
                     data={devices} 
@@ -97,6 +112,7 @@ export default function Devices({route}) {
                         >
                         {item.Name}
                         </Text>
+                        {/* botão para deletar o dispositivo do banco */}
                         <TouchableOpacity 
                             style={styles.deleteDevice} 
                             onPress={ () => {
@@ -114,10 +130,12 @@ export default function Devices({route}) {
                     )
                 }}
             />
+                {/* botão para criar um novo dispositivo no banco */}
                 <TouchableOpacity style ={styles.buttonNewDevice} onPress={ () => navigation.navigate("NewDevice", {idUser: route.params.idUser}) }>
                     <Text style={styles.iconButton}>+</Text>        
                 </TouchableOpacity>
 
+                {/* botão de logout do app */}
                 <TouchableOpacity style ={styles.buttonLogout} onPress={ () => { ButtonLogout() } }>
                     <Text style ={styles.iconButtonLogout}>
                         <MaterialCommunityIcons

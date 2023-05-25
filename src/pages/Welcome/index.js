@@ -1,15 +1,20 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+// import da função de animação de tela //
 import * as Animatable from 'react-native-animatable';
+// import da função de navegação entre telas //
 import { useNavigation } from '@react-navigation/native';
+// import dos estilos dos componentes de tela //
 import styles from './style';
 
 export default function Welcome() {
     const navigation = useNavigation();
 
+// Definição do icone ao iniciar o app //
     return (
         <View style={styles.container}>
-
+            
+            {/* Logo aplicativo ao iniciar o app */}
             <View style={styles.containerLogo}>
                 <Animatable.Image
                     animation="flipInY"
@@ -22,6 +27,7 @@ export default function Welcome() {
                 <Text style={styles.title}>Monitore seus gastos de qualquer lugar</Text>
                 <Text style={styles.text}>Faça o Login para começar</Text>
 
+                {/* Define botão de acesso ao app */}
                 <TouchableOpacity 
                     style={styles.button}
                     onPress={ () => navigation.navigate("SignIn")} >

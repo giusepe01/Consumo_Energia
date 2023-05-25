@@ -1,4 +1,6 @@
+// importa a função de navegação do app //
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// importa todas as paginas do app //
 import Welcome from '../pages/Welcome';
 import SignIn from '../pages/Signin';
 import NewUser from '../pages/NewUser';
@@ -8,6 +10,7 @@ import Details from '../pages/Details';
 
 const Stack = createNativeStackNavigator();
 
+// função onde são definidas todas as ações de nevegação entre telas // 
 export default function Routes () {
     return (
         <Stack.Navigator>
