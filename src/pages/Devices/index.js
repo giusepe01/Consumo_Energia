@@ -9,12 +9,13 @@ import styles from '../Devices/style';
 // import da função de navegação entre telas //
 import { useNavigation } from '@react-navigation/native';
 // import das função utilizadas pelo banco de dados (Firebase) //
-import { collection, getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { collection, getFirestore, doc, deleteDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
 // import da função de lista //
 import { FlatList } from 'react-native-gesture-handler';
 // import de icones //
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+
 
 // definição de todas as variáveis utilizadas na pagina //
 export default function Devices({route}) {
@@ -22,6 +23,7 @@ export default function Devices({route}) {
     const db = getFirestore(app);
     const navigation = useNavigation();
     const auth = getAuth(app);
+    const [NewName, setNewName] = useState ("");
 
     // confirma a intenção do usuário ao realizar a função de voltar tela //
     const backAction = () => {
@@ -67,7 +69,15 @@ export default function Devices({route}) {
     async function deleteDevice(id){
         const deviceDoc = doc(db, route.params.idUser, id);
         await deleteDoc(deviceDoc);
-    } 
+    }
+    
+    // função de update em um dispositivo //
+    async function updateDevice(id){
+        const deviceDoc = doc(db, route.params.idUser, id);
+        await updateDoc(deviceDoc, {
+            Name: NewName
+        });
+    }
 
     // função para ler todos os dispositivos do usuário logado (em tempo real) //
     useEffect (
@@ -99,7 +109,19 @@ export default function Devices({route}) {
                     data={devices} 
                     renderItem={( { item } ) => {
                     return (
-                    <View style={styles.Device}> 
+                    <View style={styles.Device}>
+                        {/* botão para update do dispositivo no banco */}
+                        <TouchableOpacity 
+                            style={styles.updateDevice} 
+                            onPress={ () => null }           
+                        > 
+                        <Entypo 
+                            name="edit" 
+                            size={25} 
+                            color={"#38A69D"}
+                        >  
+                        </Entypo>
+                        </TouchableOpacity>  
                         <Text 
                             style={styles.nameDevice} 
                             onPress={ () => 
@@ -115,9 +137,7 @@ export default function Devices({route}) {
                         {/* botão para deletar o dispositivo do banco */}
                         <TouchableOpacity 
                             style={styles.deleteDevice} 
-                            onPress={ () => {
-                            deleteDevice(item.id) 
-                            }}
+                            onPress={ () => { deleteDevice(item.id) }}
                         > 
                         <AntDesign 
                             name="delete" 
@@ -125,7 +145,7 @@ export default function Devices({route}) {
                             color={"#38A69D"}
                         >  
                         </AntDesign>
-                        </TouchableOpacity>        
+                        </TouchableOpacity>       
                     </View> 
                     )
                 }}

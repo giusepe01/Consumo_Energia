@@ -67,10 +67,14 @@ const styles = StyleSheet.create({
     },
     deleteDevice:{
         justifyContent: "center",
-        paddingLeft: 15
+        paddingLeft: 10
+    },
+    updateDevice:{
+        justifyContent: "center",
+        paddingLeft: 2
     },
     nameDevice:{
-        width: "85%",
+        width: "75%",
         alignContent: "flex-start",
         backgroundColor: "#F5F5F5CF",
         padding: 8,
