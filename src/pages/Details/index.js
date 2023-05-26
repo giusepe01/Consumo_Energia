@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, BackHandler } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, BackHandler, Switch } from 'react-native';
 // import da função de animação de tela //
 import * as Animatable from 'react-native-animatable';
 // import da conexão com o banco //
@@ -15,15 +15,16 @@ import { useNavigation } from '@react-navigation/native';
 export default function Details({route}) {
     const db = getFirestore(app);
     const navigation = useNavigation();
+    const [Ligado, setLigado] = useState ('');
+    const [Consumo, setConsumo] = useState ('');
 
     // função para resgatar os dados de consumo e status do dispositivo (em tempo real) //
     useEffect (
         () => 
         onSnapshot(doc(db, route.params.idUser, route.params.Itemid), (doc) =>{
-                console.log(doc.data());
                 let JsonDevice = JSON.parse(JSON.stringify(doc.data()));
-                console.log('Valor do Consumo', JsonDevice.Consumo);
-                console.log('Está ligado?', JsonDevice.Ligado);
+                setLigado(JsonDevice.Ligado)
+                setConsumo(JsonDevice.Consumo)
             }),
         []
     );
@@ -50,8 +51,17 @@ export default function Details({route}) {
 
             {/* Mostra na tela os dados de consumo do dispositivo */}
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
+                <View style={styles.switch}>
+                    <Text style={styles.statusDevice}>{Ligado ? "Dispositivo ligado" : "Dispositivo desligado"}</Text>
+                    <Switch
+                        trackColor={{false: '#767577', true: '#38A69D'}}
+                        thumbColor={Ligado ? '#f5dd4b' : '#f4f3f4'}
+                        onValueChange={null}
+                        value={Ligado}
+                        style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
+                    />
+                </View>
             </Animatable.View>
-
         </View>
     );
 }

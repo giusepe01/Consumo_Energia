@@ -79,6 +79,31 @@ const styles = StyleSheet.create({
         marginStart: 2,
         color: "#000000",
         fontSize: 18    
+    },
+    switch:{
+        width: "97%",
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: 8,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    statusDevice:{
+        width: "78%",
+        alignContent: "center",
+        padding: 8,
+        paddingHorizontal: 5,
+        borderRadius: 35,
+        marginBottom: 1,
+        marginRight: 5,
+        marginLeft: 25,
+        marginTop: 8,
+        marginStart: 1,
+        color: "#000000",
+        fontSize: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center'
     }
     
 })
