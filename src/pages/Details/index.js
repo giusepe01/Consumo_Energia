@@ -51,6 +51,8 @@ export default function Details({route}) {
 
             {/* Mostra na tela os dados de consumo do dispositivo */}
             <Animatable.View animation="fadeInUp" style ={styles.containerForm}>
+
+                {/* Tratamento para identificar se o dispositivo está ligado ou não */}
                 <View style={styles.switch}>
                     <Text style={styles.statusDevice}>{Ligado ? "Dispositivo ligado" : "Dispositivo desligado"}</Text>
                     <Switch
@@ -61,6 +63,24 @@ export default function Details({route}) {
                         style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
                     />
                 </View>
+
+                {/* Mostrar os valores de gasto do dispositivo */}
+                <View style={styles.switch}>
+                    <Text style={styles.statusDevice}>{"Gasto mensal: R$ "}{Consumo.toFixed(2)}</Text>
+                </View>
+
+                <View style={styles.switch}>
+                    <Text style={styles.statusDevice}>{"Média de gasto semanal:"+ "\n"}{"R$"} {((Consumo / 30) * 7).toFixed(2)}</Text>
+                </View>
+
+                <View style={styles.switch}>
+                    <Text style={styles.statusDevice}>{"Média de gasto diário:"+ "\n"}{"R$"} {(Consumo / 30).toFixed(2)}</Text>
+                </View>
+
+                <View style={styles.switch}>
+                    <Text style={styles.statusDevice}>{"Projeção de gasto anual:"+ "\n"}{"R$"} {((Consumo / 30) * 365).toFixed(2)}</Text>
+                </View>
+                
             </Animatable.View>
         </View>
     );
