@@ -24,7 +24,7 @@ export default function Details({route}) {
         onSnapshot(doc(db, route.params.idUser, route.params.Itemid), (doc) =>{
                 let JsonDevice = JSON.parse(JSON.stringify(doc.data()));
                 setLigado(JsonDevice.Ligado)
-                setConsumo(JsonDevice.Consumo)
+                setConsumo(JsonDevice.Consumo.toFixed(2))
             }),
         []
     );
@@ -66,7 +66,7 @@ export default function Details({route}) {
 
                 {/* Mostrar os valores de gasto do dispositivo */}
                 <View style={styles.switch}>
-                    <Text style={styles.statusDevice}>{"Gasto mensal: R$ "}{Consumo.toFixed(2)}</Text>
+                    <Text style={styles.statusDevice}>{"Gasto mensal: R$ "}{Consumo}</Text>
                 </View>
 
                 <View style={styles.switch}>
