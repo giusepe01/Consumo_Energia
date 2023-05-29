@@ -7,6 +7,11 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor: '#38A69D'
     },
+    containerHeader:{
+        marginTop: '14%',
+        marginBottom: '8%',
+        paddingStart: '5%',    
+    },
     message:{
         fontSize: 28,
         fontWeight: 'bold',
